@@ -1,4 +1,5 @@
 import 'package:blogclub/data.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,18 +17,21 @@ class MyApp extends StatelessWidget {
     final primaryTextColor = Color(0xff0D253C);
     final secondaryTextColor = Color(0xff2D4379);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
           primarySwatch: Colors.blue,
           textTheme: TextTheme(
               subtitle1: TextStyle(
                   fontFamily: defaultFontFamily,
+                  fontWeight: FontWeight.w200,
                   color: secondaryTextColor,
-                  fontSize: 14),
+                  fontSize: 18),
               headline6: TextStyle(
                   fontFamily: defaultFontFamily,
                   fontWeight: FontWeight.bold,
                   color: primaryTextColor),
+              headline4: TextStyle(fontFamily: defaultFontFamily,fontSize: 24,color: primaryTextColor,fontWeight: FontWeight.w700),
               bodyText2: TextStyle(
                   fontFamily: defaultFontFamily,
                   color: secondaryTextColor,
@@ -61,77 +65,136 @@ class HomeScreen extends StatelessWidget {
                     ),
                     Image.asset(
                       'assets/img/icons/notification.png',
-                      width: 24,
-                      height: 24,
+                      width: 32,
+                      height: 32
                     )
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(32, 0, 0, 24),
+                padding: const EdgeInsets.fromLTRB(32, 0, 0, 16),
                 child: Text(
                   "Explore today’s",
-                  style: themeData.textTheme.headline6,
+                  style: themeData.textTheme.headline4,
                 ),
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 90,
-                child: ListView.builder(
-                    itemCount: stories.length,
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
-                    itemBuilder: (context, index) {
-                      final story = stories[index];
-                      return Container(
-                        margin: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                        child: Column(
-                          children: [
-                            Stack(
-                              children: [
-                                Container(
-                                  width: 68,
-                                  height: 68,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(24),
-                                      gradient: const LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          colors: [
-                                            Color(0xff376AED),
-                                            Color(0xff49B0E2),
-                                            Color(0xff9CECFB)
-                                          ])),
-                                  child: Container(
-                                    margin: const EdgeInsets.all(3),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    padding: const EdgeInsets.all(4),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: Image.asset(
-                                          'assets/img/stories/${story.imageFileName}'),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 0,
-                                    right: 0,
-                                    child: Image.asset('assets/img/icons/${story.iconFileName}',width: 24,height: 24,))
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Text(story.name)
-                          ],
-                        ),
-                      );
-                    }),
-              )
+              _StoryList(stories: stories)
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _StoryList extends StatelessWidget {
+  const _StoryList({
+    Key? key,
+    required this.stories,
+  }) : super(key: key);
+
+  final List<StoryData> stories;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 100,
+      child: ListView.builder(
+          itemCount: stories.length,
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
+          itemBuilder: (context, index) {
+            final story = stories[index];
+            return _Story(story: story);
+          }),
+    );
+  }
+}
+
+class _Story extends StatelessWidget {
+  const _Story({
+    Key? key,
+    required this.story,
+  }) : super(key: key);
+
+  final StoryData story;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(4, 2, 4, 0),
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              story.isViewed
+                  ? _profileImageViewed()
+                  : _profileImageNormal(),
+              Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Image.asset(
+                    'assets/img/icons/${story.iconFileName}',
+                    width: 24,
+                    height: 24,
+                  ))
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(story.name)
+        ],
+      ),
+    );
+  }
+
+  Container _profileImageNormal() {
+    return Container(
+      width: 68,
+      height: 68,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          gradient: const LinearGradient(begin: Alignment.topLeft, colors: [
+            Color(0xff376AED),
+            Color(0xff49B0E2),
+            Color(0xff9CECFB)
+          ])),
+      child: Container(
+        margin: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(22)),
+        padding: const EdgeInsets.all(5),
+        child: _profileImage(),
+      ),
+    );
+  }
+
+  Widget _profileImageViewed() {
+    return SizedBox(
+      width: 68,
+      height: 68,
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        strokeWidth: 2,
+        radius: const Radius.circular(24),
+        padding: const EdgeInsets.all(7),
+        color: const Color(0xff7B8BB2),
+        dashPattern: [8, 3],
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: _profileImage(),
+        ),
+      ),
+    );
+  }
+
+  Widget _profileImage() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(17),
+      child: Image.asset('assets/img/stories/${story.imageFileName}'),
     );
   }
 }
