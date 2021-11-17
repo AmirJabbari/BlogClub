@@ -1,6 +1,7 @@
 import 'package:blogclub/carousel/carousel_slider.dart';
 import 'package:blogclub/data.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,10 +18,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final primaryTextColor = Color(0xff0D253C);
     final secondaryTextColor = Color(0xff2D4379);
+    const primaryColor = Color(0xff376AED);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+          textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                  textStyle: MaterialStateProperty.all(
+            const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              fontFamily: defaultFontFamily,
+            ),
+          ))),
           primarySwatch: Colors.blue,
           textTheme: TextTheme(
               subtitle1: TextStyle(
@@ -28,6 +39,11 @@ class MyApp extends StatelessWidget {
                   fontWeight: FontWeight.w200,
                   color: secondaryTextColor,
                   fontSize: 18),
+              subtitle2: TextStyle(
+                  fontFamily: defaultFontFamily,
+                  fontWeight: FontWeight.w400,
+                  color: primaryTextColor,
+                  fontSize: 14),
               headline6: TextStyle(
                   fontFamily: defaultFontFamily,
                   fontWeight: FontWeight.bold,
@@ -36,6 +52,11 @@ class MyApp extends StatelessWidget {
               headline4: TextStyle(
                   fontFamily: defaultFontFamily,
                   fontSize: 24,
+                  color: primaryTextColor,
+                  fontWeight: FontWeight.w700),
+              headline5: TextStyle(
+                  fontFamily: defaultFontFamily,
+                  fontSize: 20,
                   color: primaryTextColor,
                   fontWeight: FontWeight.w700),
               bodyText2: TextStyle(
@@ -85,7 +106,8 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 height: 16,
               ),
-              const _CategoryList()
+              const _CategoryList(),
+              const _PostList(),
             ],
           ),
         ),
@@ -106,8 +128,8 @@ class _CategoryList extends StatelessWidget {
       itemCount: categories.length,
       itemBuilder: (context, index, realIndex) {
         return _CategoryItem(
-          left: realIndex==0?32:8,
-          right: realIndex==categories.length-1?32:8,
+          left: realIndex == 0 ? 32 : 8,
+          right: realIndex == categories.length - 1 ? 32 : 8,
           category: categories[realIndex],
         );
       },
@@ -130,15 +152,18 @@ class _CategoryItem extends StatelessWidget {
   final Category category;
   final double left;
   final double right;
+
   const _CategoryItem({
     Key? key,
-    required this.category, required this.left, required this.right,
+    required this.category,
+    required this.left,
+    required this.right,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(left, 0,right,0),
+      margin: EdgeInsets.fromLTRB(left, 0, right, 0),
       child: Stack(
         children: [
           Positioned.fill(
@@ -152,7 +177,6 @@ class _CategoryItem extends StatelessWidget {
                 ]),
               )),
           Positioned.fill(
-
             child: Container(
               margin: const EdgeInsets.fromLTRB(0, 0, 0, 16),
               child: ClipRRect(
@@ -295,6 +319,122 @@ class _Story extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(17),
       child: Image.asset('assets/img/stories/${story.imageFileName}'),
+    );
+  }
+}
+
+class _PostList extends StatelessWidget {
+  const _PostList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final posts = AppDatabase.posts;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 32, right: 24),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Latest News',
+                style: Theme.of(context).textTheme.headline5,
+              ),
+              TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'More',
+                    style: TextStyle(color: Color(0xff367AED)),
+                  ))
+            ],
+          ),
+        ),
+        ListView.builder(
+            itemCount: posts.length,
+            itemExtent: 141,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              final post = posts[index];
+
+              return _Post(post: post);
+            })
+      ],
+    );
+  }
+}
+
+class _Post extends StatelessWidget {
+  const _Post({
+    Key? key,
+    required this.post,
+  }) : super(key: key);
+
+  final PostData post;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(32, 8, 32, 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 16,
+            color: Color(0x1a5282FF),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child:
+                  Image.asset('assets/img/posts/small/${post.imageFileName}')),
+          SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  post.caption,
+                  style: const TextStyle(
+                      fontFamily: MyApp.defaultFontFamily,
+                      color: Color(0xff376AED),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  post.title,
+                  style: Theme.of(context).textTheme.subtitle2,
+                ),
+                SizedBox(height: 16,),
+
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+
+                  children: [
+                    Icon(
+                      CupertinoIcons.hand_thumbsup,
+                      size: 20,
+                      color: Theme.of(context).textTheme.bodyText2!.color,
+                    ),
+                    SizedBox(width: 4,),
+                    Text(post.likes,style: Theme.of(context).textTheme.bodyText2,)
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
