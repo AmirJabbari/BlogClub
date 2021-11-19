@@ -78,6 +78,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -103,7 +104,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               _StoryList(stories: stories),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               const _CategoryList(),
@@ -332,7 +333,7 @@ class _PostList extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 32, right: 24),
+          padding: const EdgeInsets.only(left: 32, right: 16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -354,11 +355,13 @@ class _PostList extends StatelessWidget {
             itemCount: posts.length,
             itemExtent: 141,
             shrinkWrap: true,
+            physics: const  BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               final post = posts[index];
 
               return _Post(post: post);
-            })
+            }),
+        SizedBox(height: 32,)
       ],
     );
   }
@@ -379,7 +382,7 @@ class _Post extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 16,
             color: Color(0x1a5282FF),
@@ -392,45 +395,75 @@ class _Post extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               child:
                   Image.asset('assets/img/posts/small/${post.imageFileName}')),
-          SizedBox(
-            width: 16,
-          ),
+
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  post.caption,
-                  style: const TextStyle(
-                      fontFamily: MyApp.defaultFontFamily,
-                      color: Color(0xff376AED),
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  post.title,
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-                SizedBox(height: 16,),
-
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-
-                  children: [
-                    Icon(
-                      CupertinoIcons.hand_thumbsup,
-                      size: 20,
-                      color: Theme.of(context).textTheme.bodyText2!.color,
-                    ),
-                    SizedBox(width: 4,),
-                    Text(post.likes,style: Theme.of(context).textTheme.bodyText2,)
-                  ],
-                )
-              ],
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16,0,16,0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    post.caption,
+                    style: const TextStyle(
+                        fontFamily: MyApp.defaultFontFamily,
+                        color: Color(0xff376AED),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    post.title,
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Icon(
+                        CupertinoIcons.hand_thumbsup,
+                        size: 16,
+                        color: Theme.of(context).textTheme.bodyText2!.color,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        post.likes,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Icon(
+                        CupertinoIcons.clock,
+                        size: 16,
+                        color: Theme.of(context).textTheme.bodyText2!.color,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        post.likes,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                      Expanded(
+                          child: Container(
+                        alignment: Alignment.centerRight,
+                        child: Icon(post.isBookmarked?
+                          CupertinoIcons.bookmark_fill:CupertinoIcons.bookmark,
+                          size: 16,
+                          color: Theme.of(context).textTheme.bodyText2!.color,
+                        ),
+                      ))
+                    ],
+                  )
+                ],
+              ),
             ),
           )
         ],
