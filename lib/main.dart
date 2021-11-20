@@ -3,8 +3,15 @@ import 'package:blogclub/data.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.white,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarColor: Colors.white,
+    systemNavigationBarIconBrightness: Brightness.dark
+  ));
   runApp(const MyApp());
 }
 
@@ -44,6 +51,11 @@ class MyApp extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                   color: primaryTextColor,
                   fontSize: 14),
+              caption: const TextStyle(
+                  fontFamily: defaultFontFamily,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xff7B8BB2),
+                  fontSize: 10),
               headline6: TextStyle(
                   fontFamily: defaultFontFamily,
                   fontWeight: FontWeight.bold,
@@ -63,7 +75,12 @@ class MyApp extends StatelessWidget {
                   fontFamily: defaultFontFamily,
                   color: secondaryTextColor,
                   fontSize: 12))),
-      home: const HomeScreen(),
+      home: Stack(
+        children: [
+          const Positioned.fill(child: HomeScreen()),
+          Positioned(left: 0, bottom: 0, right: 0, child: _BottomNavigation())
+        ],
+      ),
     );
   }
 }
@@ -139,7 +156,7 @@ class _CategoryList extends StatelessWidget {
         viewportFraction: 0.8,
         aspectRatio: 1.2,
         initialPage: 0,
-        scrollPhysics: BouncingScrollPhysics(),
+        scrollPhysics: const BouncingScrollPhysics(),
         disableCenter: true,
         enableInfiniteScroll: false,
         enlargeCenterPage: true,
@@ -305,7 +322,7 @@ class _Story extends StatelessWidget {
         radius: const Radius.circular(24),
         padding: const EdgeInsets.all(7),
         color: const Color(0xff7B8BB2),
-        dashPattern: [8, 3],
+        dashPattern: const [8, 3],
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
@@ -355,13 +372,15 @@ class _PostList extends StatelessWidget {
             itemCount: posts.length,
             itemExtent: 141,
             shrinkWrap: true,
-            physics: const  BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               final post = posts[index];
 
               return _Post(post: post);
             }),
-        SizedBox(height: 32,)
+        const SizedBox(
+          height: 32,
+        )
       ],
     );
   }
@@ -395,10 +414,9 @@ class _Post extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               child:
                   Image.asset('assets/img/posts/small/${post.imageFileName}')),
-
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16,0,16,0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -454,8 +472,10 @@ class _Post extends StatelessWidget {
                       Expanded(
                           child: Container(
                         alignment: Alignment.centerRight,
-                        child: Icon(post.isBookmarked?
-                          CupertinoIcons.bookmark_fill:CupertinoIcons.bookmark,
+                        child: Icon(
+                          post.isBookmarked
+                              ? CupertinoIcons.bookmark_fill
+                              : CupertinoIcons.bookmark,
                           size: 16,
                           color: Theme.of(context).textTheme.bodyText2!.color,
                         ),
@@ -468,6 +488,100 @@ class _Post extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class _BottomNavigation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 85,
+      child: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              height: 65,
+              decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                BoxShadow(
+                    blurRadius: 20,
+                    color: const Color(0xff9b8487).withOpacity(0.3))
+              ]),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: const [
+                  _BottomNavigationItem(
+                      iconFileName: 'Home.png',
+                      activeIconFileName: 'Home.png',
+                      title: 'Home'),
+                  _BottomNavigationItem(
+                      iconFileName: 'Articles.png',
+                      activeIconFileName: 'Articles.png',
+                      title: 'Article'),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  _BottomNavigationItem(
+                      iconFileName: 'Search.png',
+                      activeIconFileName: 'Search.png',
+                      title: 'Search.'),
+                  _BottomNavigationItem(
+                      iconFileName: 'Menu.png',
+                      activeIconFileName: 'Menu.png',
+                      title: 'Menu'),
+                ],
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 65,
+              height: 85,
+              alignment: Alignment.topCenter,
+              child: Container(
+                  height: 65,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(32.5),
+                      color: const Color(0xff376AED),
+                      border: Border.all(color: Colors.white, width: 4)),
+                  child: Image.asset('assets/img/icons/plus.png')),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _BottomNavigationItem extends StatelessWidget {
+  final String iconFileName;
+  final String activeIconFileName;
+  final String title;
+
+  const _BottomNavigationItem(
+      {Key? key,
+      required this.iconFileName,
+      required this.activeIconFileName,
+      required this.title})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/img/icons/$iconFileName'),
+        const SizedBox(
+          height: 4,
+        ),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.caption,
+        )
+      ],
     );
   }
 }
