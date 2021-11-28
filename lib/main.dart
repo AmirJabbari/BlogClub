@@ -1,5 +1,6 @@
 import 'package:blogclub/carousel/carousel_slider.dart';
 import 'package:blogclub/data.dart';
+import 'package:blogclub/gen/assets.gen.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +8,10 @@ import 'package:flutter/services.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.white,
-    statusBarIconBrightness: Brightness.dark,
-    systemNavigationBarColor: Colors.white,
-    systemNavigationBarIconBrightness: Brightness.dark
-  ));
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark));
   runApp(const MyApp());
 }
 
@@ -108,8 +108,7 @@ class HomeScreen extends StatelessWidget {
                       'Hi, Jonathan!',
                       style: themeData.textTheme.subtitle1,
                     ),
-                    Image.asset('assets/img/icons/notification.png',
-                        width: 32, height: 32)
+                   Assets.img.icons.notification.image(width: 32,height: 32)
                   ],
                 ),
               ),
