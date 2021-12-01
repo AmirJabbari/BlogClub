@@ -1,4 +1,3 @@
-
 import 'package:blogclub/splash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +36,14 @@ class MyApp extends StatelessWidget {
               fontFamily: defaultFontFamily,
             ),
           ))),
-          primarySwatch: Colors.blue,
+          colorScheme: ColorScheme.light(
+            primary: primaryColor,
+            onPrimary: Colors.white,
+            onSurface: primaryTextColor,
+            onBackground: primaryTextColor,
+            background: Color(0xffFBFCFF),
+            surface: Colors.white
+          ),
           textTheme: TextTheme(
               subtitle1: TextStyle(
                   fontFamily: defaultFontFamily,
@@ -73,17 +79,16 @@ class MyApp extends StatelessWidget {
                   fontFamily: defaultFontFamily,
                   color: secondaryTextColor,
                   fontSize: 12))),
-     /* home: Stack(
+      /* home: Stack(
         children: [
            const Positioned.fill(child: HomeScreen()),
           Positioned(left: 0, bottom: 0, right: 0, child: _BottomNavigation())
         ],
       )*/
-        home: const SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }
-
 
 class _BottomNavigation extends StatelessWidget {
   @override
