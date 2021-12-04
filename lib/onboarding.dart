@@ -1,3 +1,4 @@
+import 'package:blogclub/auth.dart';
 import 'package:blogclub/data.dart';
 import 'package:blogclub/gen/assets.gen.dart';
 import 'package:blogclub/home.dart';
@@ -102,7 +103,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                             BorderRadius.circular(12)))),
                             onPressed: () {
                               if(page==items.length-1){
-                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>HomeScreen()));
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const AuthScreen()));
                               }else{
                                 _pageController.animateToPage(page+1, duration: Duration(microseconds: 500), curve: Curves.decelerate);
                               }
