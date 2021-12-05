@@ -17,18 +17,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final PageController _pageController = PageController();
   final items = AppDatabase.onBoardingItems;
 
-  int page=0;
+  int page = 0;
+
   @override
   void initState() {
     _pageController.addListener(() {
-      if(_pageController.page!.round()!=page){
+      if (_pageController.page!.round() != page) {
         setState(() {
-          page=_pageController.page!.round();
+          page = _pageController.page!.round();
+          debugPrint('Onboarding: Selected Page -> $page');
         });
       }
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -39,12 +42,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 32, bottom: 8,),
+                padding: const EdgeInsets.only(
+                  top: 32,
+                  bottom: 8,
+                ),
                 child: Assets.img.background.onboarding.image(),
               ),
             ),
             Container(
-
               height: 260,
               decoration: BoxDecoration(
                   color: themeData.colorScheme.surface,
@@ -67,9 +72,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(items[index].title,style: themeData.textTheme.headline4,),
-                              SizedBox(height: 16,),
-                              Text(items[index].description,style: themeData.textTheme.subtitle1!.apply(fontSizeFactor: 0.9),),
+                              Text(
+                                items[index].title,
+                                style: themeData.textTheme.headline4,
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Text(
+                                items[index].description,
+                                style: themeData.textTheme.subtitle1!
+                                    .apply(fontSizeFactor: 0.9),
+                              ),
                             ],
                           ),
                         );
@@ -77,8 +91,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.only(left: 32, right: 32,bottom: 8),
-
+                    padding:
+                        const EdgeInsets.only(left: 32, right: 32, bottom: 8),
                     height: 60,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,13 +116,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                         borderRadius:
                                             BorderRadius.circular(12)))),
                             onPressed: () {
-                              if(page==items.length-1){
-                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const AuthScreen()));
-                              }else{
-                                _pageController.animateToPage(page+1, duration: Duration(microseconds: 500), curve: Curves.decelerate);
+                              if (page == items.length - 1) {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AuthScreen()));
+                              } else {
+                                _pageController.animateToPage(page + 1,
+                                    duration:  Duration(milliseconds: 500),
+                                    curve: Curves.decelerate);
                               }
                             },
-                            child:  Icon(page==items.length-1?CupertinoIcons.check_mark:CupertinoIcons.arrow_right))
+                            child: Icon(page == items.length - 1
+                                ? CupertinoIcons.check_mark
+                                : CupertinoIcons.arrow_right))
                       ],
                     ),
                   )
