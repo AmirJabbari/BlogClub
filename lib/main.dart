@@ -1,3 +1,4 @@
+import 'package:blogclub/article.dart';
 import 'package:blogclub/splash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,12 +38,20 @@ class MyApp extends StatelessWidget {
             ),
           ))),
           colorScheme: ColorScheme.light(
-            primary: primaryColor,
-            onPrimary: Colors.white,
-            onSurface: primaryTextColor,
-            onBackground: primaryTextColor,
-            background: Color(0xffFBFCFF),
-            surface: Colors.white
+              primary: primaryColor,
+              onPrimary: Colors.white,
+              onSurface: primaryTextColor,
+              onBackground: primaryTextColor,
+              background: Color(0xffFBFCFF),
+              surface: Colors.white),
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.white,
+            foregroundColor: primaryTextColor,
+            titleSpacing: 32,
+          ),
+          snackBarTheme: const SnackBarThemeData(
+            backgroundColor: primaryColor,
+
           ),
           textTheme: TextTheme(
               subtitle1: TextStyle(
@@ -85,7 +94,7 @@ class MyApp extends StatelessWidget {
           Positioned(left: 0, bottom: 0, right: 0, child: _BottomNavigation())
         ],
       )*/
-      home: const SplashScreen(),
+      home: const ArticleScreen(),
     );
   }
 }
