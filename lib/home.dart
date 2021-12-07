@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                       'Hi, Jonathan!',
                       style: themeData.textTheme.subtitle1,
                     ),
-                    Assets.img.icons.notification.image(width: 32,height: 32),
+                    Assets.img.icons.notification.image(width: 32, height: 32),
                   ],
                 ),
               ),
@@ -334,7 +334,7 @@ class _Post extends StatelessWidget {
           ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child:
-              Image.asset('assets/img/posts/small/${post.imageFileName}')),
+                  Image.asset('assets/img/posts/small/${post.imageFileName}')),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -392,15 +392,15 @@ class _Post extends StatelessWidget {
                       ),
                       Expanded(
                           child: Container(
-                            alignment: Alignment.centerRight,
-                            child: Icon(
-                              post.isBookmarked
-                                  ? CupertinoIcons.bookmark_fill
-                                  : CupertinoIcons.bookmark,
-                              size: 16,
-                              color: Theme.of(context).textTheme.bodyText2!.color,
-                            ),
-                          ))
+                        alignment: Alignment.centerRight,
+                        child: Icon(
+                          post.isBookmarked
+                              ? CupertinoIcons.bookmark_fill
+                              : CupertinoIcons.bookmark,
+                          size: 16,
+                          color: Theme.of(context).textTheme.bodyText2!.color,
+                        ),
+                      ))
                     ],
                   )
                 ],

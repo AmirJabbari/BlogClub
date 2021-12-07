@@ -67,7 +67,10 @@ class _AuthScreenState extends State<AuthScreen> {
                             },
                             child: Text(
                               'SignUp'.toUpperCase(),
-                              style: tapTextStyle.apply(color: selectedTapIndex==signupTap?Colors.white:Colors.white54),
+                              style: tapTextStyle.apply(
+                                  color: selectedTapIndex == signupTap
+                                      ? Colors.white
+                                      : Colors.white54),
                             ),
                           )
                         ],
@@ -83,7 +86,9 @@ class _AuthScreenState extends State<AuthScreen> {
                         child: SingleChildScrollView(
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(32, 48, 32, 32),
-                            child:selectedTapIndex==loginTap? _Login(themeData: themeData):_SignUp(themeData: themeData),
+                            child: selectedTapIndex == loginTap
+                                ? _Login(themeData: themeData)
+                                : _SignUp(themeData: themeData),
                           ),
                         ),
                       ),

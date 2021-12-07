@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
               onPrimary: Colors.white,
               onSurface: primaryTextColor,
               onBackground: primaryTextColor,
-              background: Color(0xffFBFCFF),
+              background: const Color(0xffFBFCFF),
               surface: Colors.white),
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.white,
