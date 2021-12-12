@@ -1,4 +1,5 @@
 import 'package:blogclub/article.dart';
+import 'package:blogclub/profile.dart';
 import 'package:blogclub/splash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -87,14 +88,18 @@ class MyApp extends StatelessWidget {
               bodyText2: TextStyle(
                   fontFamily: defaultFontFamily,
                   color: secondaryTextColor,
-                  fontSize: 12))),
+                  fontSize: 12),
+              bodyText1: TextStyle(
+                  fontFamily: defaultFontFamily,
+                  color: primaryTextColor,
+                  fontSize: 14))),
       /* home: Stack(
         children: [
            const Positioned.fill(child: HomeScreen()),
           Positioned(left: 0, bottom: 0, right: 0, child: _BottomNavigation())
         ],
       )*/
-      home: const ArticleScreen(),
+      home: const ProfileScreen(),
     );
   }
 }
