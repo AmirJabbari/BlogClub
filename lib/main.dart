@@ -99,7 +99,7 @@ class MyApp extends StatelessWidget {
           Positioned(left: 0, bottom: 0, right: 0, child: _BottomNavigation())
         ],
       )*/
-      home: const ProfileScreen(),
+      home: const SplashScreen(),
     );
   }
 }
