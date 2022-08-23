@@ -1,6 +1,6 @@
 # blogclub
 
-Blog Club Project
+Blog Club A sample project for test Flutter ui
 
 ## Getting Started
 
